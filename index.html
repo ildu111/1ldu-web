@@ -96,7 +96,7 @@ nav .container {
 }
 .cd-block { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .cd-num {
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(2rem, 7vw, 3rem);
   font-weight: 300;
   letter-spacing: 0.05em;
   color: var(--text);
@@ -216,6 +216,7 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-width: 0;
 }
 .sc-track-title {
   font-size: 0.8rem;
@@ -411,6 +412,14 @@ footer {
   nav .container { padding: 0 20px; }
   section { padding: 80px 20px; }
   #hero { padding: 0 20px; }
+  .next-show-label { font-size: 0.8rem; letter-spacing: 0.2em; }
+  .cd-num { font-size: clamp(2.4rem, 10vw, 3rem); }
+  .cd-label { font-size: 0.7rem; }
+  .next-show { font-size: 0.8rem; }
+  .sc-main { grid-template-columns: 100px 1fr; }
+  .sc-artwork { width: 100px; height: 100px; }
+  .sc-info { min-width: 0; }
+  .sc-track-title { font-size: 0.7rem; }
 }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
