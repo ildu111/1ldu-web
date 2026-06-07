@@ -96,6 +96,42 @@ nav .container {
 .btn-accent { border-color: var(--accent); color: var(--accent); }
 .btn-accent:hover { background: var(--accent); color: var(--bg); }
 
+/* COUNTDOWN */
+.countdown {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 40px;
+}
+.cd-block { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.cd-num {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  line-height: 1;
+}
+.cd-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.cd-sep {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+  padding-bottom: 18px;
+}
+.next-show {
+  margin-top: 20px;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
 /* SECTIONS */
 section {
   min-height: 100vh;
@@ -238,10 +274,16 @@ footer {
 <section id="hero">
   <div class="hero-inner">
     <h1>1L<span>D</span>U</h1>
-    <div class="hero-cta">
-      <a href="#music" class="btn">Listen</a>
-      <a href="#bio" class="btn btn-accent">Bio</a>
+    <div class="countdown" id="countdown">
+      <div class="cd-block"><span class="cd-num" id="cd-days">00</span><span class="cd-label">days</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">hrs</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><span class="cd-num" id="cd-mins">00</span><span class="cd-label">min</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">sec</span></div>
     </div>
+    <p class="next-show">17.07.2026 — Sala Montjuïc, Barcelona</p>
   </div>
 </section>
 
@@ -324,7 +366,65 @@ footer {
 </footer>
 
 <script>
-document.querySelectorAll('a[href^="#"]').forEach(a => {
+
+  const CAL_ID = '64e914be9329df91efb8946fe3a3117e58e7074222f261f00777eb20f50af0c3@group.calendar.google.com';
+  const API_KEY = 'AIzaSyCeZqcflELBdFiORBxR0vGX8g9K5kFsj-4'; // substitueix per la teva API key
+
+  let countdownInterval = null;
+
+  function startCountdown(target, venue) {
+    document.querySelector('.next-show').textContent = venue;
+    function tick() {
+      const now = new Date();
+      const diff = target - now;
+      if (diff <= 0) {
+        document.getElementById('countdown').innerHTML =
+          '<span style="font-size:1rem;letter-spacing:0.2em;color:var(--accent)">TONIGHT</span>';
+        clearInterval(countdownInterval);
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+      document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+      document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+      document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+    }
+    tick();
+    countdownInterval = setInterval(tick, 1000);
+  }
+
+  function fetchNextShow() {
+    const now = new Date().toISOString();
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}/events?key=${API_KEY}&timeMin=${now}&orderBy=startTime&singleEvents=true&maxResults=1`;
+    fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        const events = data.items;
+        if (!events || events.length === 0) {
+          document.getElementById('countdown').style.display = 'none';
+          document.querySelector('.next-show').style.display = 'none';
+          return;
+        }
+        const ev = events[0];
+        const start = ev.start.dateTime || ev.start.date;
+        const target = new Date(start);
+        const loc = ev.location || ev.summary || '';
+        const dateStr = target.toLocaleDateString('en-GB', {day:'2-digit', month:'2-digit', year:'numeric'}).replace(/\//g,'.');
+        const venue = `${dateStr} — ${loc}`;
+        startCountdown(target, venue);
+      })
+      .catch(() => {
+        // fallback: mostra el countdown sense text de venue
+        document.querySelector('.next-show').textContent = 'Next show coming soon';
+      });
+  }
+
+  fetchNextShow();
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
     document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
