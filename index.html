@@ -212,6 +212,50 @@ h2 {
   width: 100%; height: 100%; border: none;
 }
 
+
+/* UPCOMING */
+#upcoming { background: var(--dark); border-top: 1px solid var(--border); }
+.events-loading { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.15em; }
+.events-list { margin-top: 40px; }
+.event-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 140px;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 24px;
+  transition: background 0.2s;
+}
+.event-row:first-child { border-top: 1px solid var(--border); }
+.event-row:hover { background: rgba(74,103,65,0.06); }
+.event-date {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+.event-venue {
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+.event-city {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-align: right;
+  text-transform: uppercase;
+}
+.events-empty {
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  padding: 40px 0;
+}
+@media (max-width: 768px) {
+  .event-row { grid-template-columns: 100px 1fr; }
+  .event-city { display: none; }
+}
+
 /* CONNECT */
 #connect { background: var(--dark); border-top: 1px solid var(--border); }
 .connect-grid {
@@ -270,8 +314,9 @@ footer {
     <a class="logo" href="#">1LDU</a>
     <ul class="nav-links">
       <li><a href="#bio">Bio</a></li>
-      <li><a href="#music">Music</a></li>
       <li><a href="#video">Video</a></li>
+      <li><a href="#music">Music</a></li>
+      <li><a href="#upcoming">Upcoming</a></li>
       <li><a href="#connect">Connect</a></li>
     </ul>
   </div>
@@ -310,18 +355,6 @@ footer {
   </div>
 </section>
 
-<section id="music">
-  <div class="container">
-    <div class="music-inner">
-      <h2>Music</h2>
-      <div class="sc-wrap">
-        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay"
-          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2087680867&color=%234A6741&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section id="video">
   <div class="container">
     <h2>Video</h2>
@@ -338,6 +371,27 @@ footer {
         <iframe src="https://www.youtube.com/embed/HKezcfHWbks" title="1LDU Live Performance"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="music">
+  <div class="container">
+    <div class="music-inner">
+      <h2>Music</h2>
+      <div class="sc-wrap">
+        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay"
+          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2087680867&color=%234A6741&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="upcoming">
+  <div class="container">
+    <h2>Upcoming</h2>
+    <div class="events-list" id="events-list">
+      <p class="events-loading">Loading...</p>
     </div>
   </div>
 </section>
@@ -430,6 +484,40 @@ footer {
   }
 
   fetchNextShow();
+
+  function fetchEvents() {
+    const now = new Date().toISOString();
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}/events?key=${API_KEY}&timeMin=${now}&orderBy=startTime&singleEvents=true&maxResults=10`;
+    fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        const list = document.getElementById('events-list');
+        const events = data.items || [];
+        if (events.length === 0) {
+          list.innerHTML = '<p class="events-empty">No upcoming shows scheduled.</p>';
+          return;
+        }
+        list.innerHTML = events.map(ev => {
+          const start = ev.start.dateTime || ev.start.date;
+          const d = new Date(start);
+          const dateStr = d.toLocaleDateString('en-GB', {day:'2-digit', month:'2-digit', year:'numeric'}).replace(/\//g,'.');
+          const loc = ev.location || '';
+          const parts = loc.split(',');
+          const venue = ev.summary || parts[0] || '';
+          const city = parts.length > 1 ? parts[parts.length - 1].trim() : '';
+          return `<div class="event-row">
+            <span class="event-date">${dateStr}</span>
+            <span class="event-venue">${venue}</span>
+            <span class="event-city">${city}</span>
+          </div>`;
+        }).join('');
+      })
+      .catch(() => {
+        document.getElementById('events-list').innerHTML = '<p class="events-empty">Unable to load events.</p>';
+      });
+  }
+  fetchEvents();
+
 
   document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
