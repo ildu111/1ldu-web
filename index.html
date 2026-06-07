@@ -162,7 +162,6 @@ h2 {
 .sc-wrap {
   margin-top: 40px;
   border: 1px solid var(--border);
-  filter: invert(1) hue-rotate(180deg);
 }
 
 /* VIDEO */
@@ -184,6 +183,130 @@ h2 {
   width: 100%; height: 100%; border: none;
 }
 
+
+
+/* SC PLAYER */
+.sc-player {
+  margin-top: 40px;
+  border: 1px solid var(--border);
+}
+.sc-main {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.sc-artwork {
+  width: 180px;
+  height: 180px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.sc-artwork img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.sc-artwork-placeholder {
+  width: 100%; height: 100%;
+  background: #1a1714;
+}
+.sc-info {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.sc-track-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sc-progress-wrap { display: flex; flex-direction: column; gap: 6px; }
+.sc-progress-bar {
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+  cursor: pointer;
+  position: relative;
+}
+.sc-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  transition: width 0.5s linear;
+}
+.sc-times {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+.sc-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.sc-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  line-height: 1;
+}
+.sc-btn:hover { border-color: var(--text); color: var(--text); }
+.sc-btn-play { border-color: var(--accent); color: var(--accent); padding: 8px 20px; }
+.sc-btn-play:hover { background: var(--accent); color: var(--bg); }
+.sc-tracklist { max-height: 320px; overflow-y: auto; }
+.sc-track-row {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+  gap: 12px;
+}
+.sc-track-row:last-child { border-bottom: none; }
+.sc-track-row:hover { background: rgba(74,103,65,0.06); }
+.sc-track-row.active { background: rgba(74,103,65,0.1); }
+.sc-track-row.active .sc-track-num { color: var(--accent); }
+.sc-track-num {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-align: center;
+}
+.sc-track-name {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sc-track-thumb {
+  width: 36px; height: 36px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.sc-track-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+@media (max-width: 768px) {
+  .sc-main { grid-template-columns: 100px 1fr; }
+  .sc-artwork { width: 100px; height: 100px; }
+}
 
 /* UPCOMING */
 #upcoming { background: var(--dark); border-top: 1px solid var(--border); }
@@ -291,6 +414,7 @@ footer {
 }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<script src="https://w.soundcloud.com/player/api.js"></script>
 </head>
 <body>
 
@@ -362,9 +486,36 @@ footer {
   <div class="container">
     <div class="music-inner">
       <h2>Music</h2>
-      <div class="sc-wrap">
-        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay"
-          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2087680867&color=%234A6741&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+      <!-- iframe ocult per a Widget API -->
+      <iframe id="sc-iframe" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2087680867&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false" style="position:absolute;left:-9999px;width:1px;height:1px;" allow="autoplay"></iframe>
+
+      <!-- Player custom -->
+      <div class="sc-player" id="sc-player">
+        <div class="sc-main">
+          <div class="sc-artwork" id="sc-artwork">
+            <div class="sc-artwork-placeholder"></div>
+          </div>
+          <div class="sc-info">
+            <div class="sc-track-title" id="sc-track-title">—</div>
+            <div class="sc-progress-wrap">
+              <div class="sc-progress-bar" id="sc-progress-bar">
+                <div class="sc-progress-fill" id="sc-progress-fill"></div>
+              </div>
+              <div class="sc-times">
+                <span id="sc-pos">0:00</span>
+                <span id="sc-dur">0:00</span>
+              </div>
+            </div>
+            <div class="sc-controls">
+              <button class="sc-btn" id="sc-prev" title="Previous"><i class="ti ti-player-skip-back"></i></button>
+              <button class="sc-btn sc-btn-play" id="sc-play" title="Play"><i class="ti ti-player-play" id="sc-play-icon"></i></button>
+              <button class="sc-btn" id="sc-next" title="Next"><i class="ti ti-player-skip-forward"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="sc-tracklist" id="sc-tracklist">
+          <p class="events-loading">Loading...</p>
+        </div>
       </div>
     </div>
   </div>
@@ -414,6 +565,115 @@ footer {
 </footer>
 
 <script>
+
+
+  // ── SoundCloud Custom Player ──
+  const scIframe = document.getElementById('sc-iframe');
+  const widget = SC.Widget(scIframe);
+
+  let sounds = [];
+  let currentIndex = 0;
+  let isPlaying = false;
+  let duration = 0;
+
+  function formatTime(ms) {
+    const s = Math.floor(ms / 1000);
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  }
+
+  function setArtwork(url) {
+    const art = document.getElementById('sc-artwork');
+    if (url) {
+      const large = url.replace('-large', '-t500x500');
+      art.innerHTML = `<img src="${large}" alt="artwork">`;
+    } else {
+      art.innerHTML = '<div class="sc-artwork-placeholder"></div>';
+    }
+  }
+
+  function setActiveTrack(idx) {
+    currentIndex = idx;
+    const rows = document.querySelectorAll('.sc-track-row');
+    rows.forEach((r, i) => r.classList.toggle('active', i === idx));
+    if (sounds[idx]) {
+      document.getElementById('sc-track-title').textContent = sounds[idx].title;
+      setArtwork(sounds[idx].artwork_url);
+    }
+  }
+
+  function renderTracklist(tracks) {
+    const list = document.getElementById('sc-tracklist');
+    list.innerHTML = tracks.map((t, i) => {
+      const thumb = t.artwork_url ? t.artwork_url.replace('-large', '-small') : '';
+      return `<div class="sc-track-row" data-index="${i}">
+        <span class="sc-track-num">${String(i + 1).padStart(2, '0')}</span>
+        <span class="sc-track-name">${t.title}</span>
+        <div class="sc-track-thumb">${thumb ? `<img src="${thumb}" alt="">` : ''}</div>
+      </div>`;
+    }).join('');
+    list.querySelectorAll('.sc-track-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const idx = parseInt(row.dataset.index);
+        widget.skip(idx);
+        widget.play();
+      });
+    });
+  }
+
+  widget.bind(SC.Widget.Events.READY, () => {
+    widget.getSounds(tracks => {
+      sounds = tracks;
+      renderTracklist(tracks);
+      if (tracks[0]) {
+        document.getElementById('sc-track-title').textContent = tracks[0].title;
+        setArtwork(tracks[0].artwork_url);
+      }
+    });
+  });
+
+  widget.bind(SC.Widget.Events.PLAY, () => {
+    isPlaying = true;
+    document.getElementById('sc-play-icon').className = 'ti ti-player-pause';
+    widget.getCurrentSoundIndex(idx => setActiveTrack(idx));
+    widget.getDuration(d => { duration = d; document.getElementById('sc-dur').textContent = formatTime(d); });
+  });
+
+  widget.bind(SC.Widget.Events.PAUSE, () => {
+    isPlaying = false;
+    document.getElementById('sc-play-icon').className = 'ti ti-player-play';
+  });
+
+  widget.bind(SC.Widget.Events.FINISH, () => {
+    isPlaying = false;
+    document.getElementById('sc-play-icon').className = 'ti ti-player-play';
+    document.getElementById('sc-progress-fill').style.width = '0%';
+  });
+
+  widget.bind(SC.Widget.Events.PLAY_PROGRESS, e => {
+    document.getElementById('sc-pos').textContent = formatTime(e.currentPosition);
+    if (duration > 0) {
+      document.getElementById('sc-progress-fill').style.width = `${(e.currentPosition / duration) * 100}%`;
+    }
+  });
+
+  // Controls
+  document.getElementById('sc-play').addEventListener('click', () => {
+    isPlaying ? widget.pause() : widget.play();
+  });
+  document.getElementById('sc-prev').addEventListener('click', () => {
+    widget.prev();
+  });
+  document.getElementById('sc-next').addEventListener('click', () => {
+    widget.next();
+  });
+
+  // Progress bar seek
+  document.getElementById('sc-progress-bar').addEventListener('click', e => {
+    if (!duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    widget.seekTo(ratio * duration);
+  });
 
   const CAL_ID = '64e914be9329df91efb8946fe3a3117e58e7074222f261f00777eb20f50af0c3@group.calendar.google.com';
   const API_KEY = 'AIzaSyCeZqcflELBdFiORBxR0vGX8g9K5kFsj-4';
