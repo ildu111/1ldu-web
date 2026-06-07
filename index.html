@@ -58,7 +58,7 @@ nav .container {
 #hero {
   min-height: 100vh;
   display: flex; align-items: center;
-  background: linear-gradient(rgba(14,12,10,0.45), rgba(14,12,10,0.6)),
+  background: linear-gradient(rgba(14,12,10,0.25), rgba(14,12,10,0.5)),
               url('img/hero-bg.jpg') center/cover no-repeat;
   padding: 0 40px;
 }
@@ -409,6 +409,10 @@ footer {
   <div class="container">
     <h2>Upcoming</h2>
     <div class="events-list" id="events-list">
+      <p class="events-loading">Loading...</p>
+    </div>
+    <h2 style="margin-top: 80px;">Past shows</h2>
+    <div class="events-list" id="past-list">
       <p class="events-loading">Loading...</p>
     </div>
   </div>
