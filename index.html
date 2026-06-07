@@ -58,7 +58,7 @@ nav .container {
 #hero {
   min-height: 100vh;
   display: flex; align-items: center;
-  background: linear-gradient(rgba(14,12,10,0.75), rgba(14,12,10,0.75)),
+  background: linear-gradient(rgba(14,12,10,0.45), rgba(14,12,10,0.6)),
               url('img/hero-bg.jpg') center/cover no-repeat;
   padding: 0 40px;
 }
@@ -163,6 +163,7 @@ h2 {
   gap: 80px;
   align-items: center;
 }
+.bio-text--wide { max-width: 680px; }
 .bio-text p {
   font-size: 0.95rem;
   line-height: 1.9;
@@ -244,6 +245,20 @@ h2 {
   color: var(--muted);
   text-align: right;
   text-transform: uppercase;
+}
+.past-label {
+  margin-top: 80px;
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0;
+}
+.event-row--past .event-date,
+.event-row--past .event-venue,
+.event-row--past .event-city {
+  opacity: 0.45;
 }
 .events-empty {
   font-size: 0.7rem;
@@ -342,16 +357,11 @@ footer {
 <section id="bio">
   <div class="container">
     <h2>Bio</h2>
-    <div class="bio-grid">
-      <div class="bio-text">
+    <div class="bio-text bio-text--wide">
         <p>1LDU is the solo project of <strong>Ildefons Alonso Valls</strong> — a fully improvised live set navigating between bittersweet ambient textures and bursts of cosmic IDM.</p>
         <p>Each performance is built in real time: synthesizers, drum machines, and layered sequences constructed and dissolved without a fixed score. <strong>No two sets are the same.</strong></p>
         <p>Trained in Jazz Drumming and Composition at the Royal Academy of Music in London, and Classical Piano at ESMUC in Barcelona. Over 15 years active in the Catalan music scene.</p>
       </div>
-      <div class="bio-img-placeholder">
-        <img src="img/hero-bg.jpg" alt="1LDU">
-      </div>
-    </div>
   </div>
 </section>
 
@@ -375,6 +385,10 @@ footer {
         <iframe src="https://www.youtube.com/embed/HKezcfHWbks" title="1LDU Live @ Trama"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
+
+    <h2 class="past-label">Past shows</h2>
+    <div class="events-list" id="past-list">
+      <p class="events-loading">Loading...</p>
     </div>
   </div>
 </section>
@@ -521,6 +535,40 @@ footer {
       });
   }
   fetchEvents();
+
+  function fetchPastEvents() {
+    const now = new Date().toISOString();
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}/events?key=${API_KEY}&timeMax=${now}&orderBy=startTime&singleEvents=true&maxResults=20`;
+    fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        const list = document.getElementById('past-list');
+        const events = (data.items || []).reverse();
+        if (events.length === 0) {
+          list.innerHTML = '<p class="events-empty">No past shows.</p>';
+          return;
+        }
+        list.innerHTML = events.map(ev => {
+          const start = ev.start.dateTime || ev.start.date;
+          const d = new Date(start);
+          const dateStr = d.toLocaleDateString('en-GB', {day:'2-digit', month:'2-digit', year:'numeric'}).replace(/\//g,'.');
+          const loc = ev.location || '';
+          const parts = loc.split(',');
+          const venue = ev.summary || parts[0] || '';
+          const city = parts.length > 1 ? parts[parts.length - 1].trim() : '';
+          return `<div class="event-row event-row--past">
+            <span class="event-date">${dateStr}</span>
+            <span class="event-venue">${venue}</span>
+            <span class="event-city">${city}</span>
+          </div>`;
+        }).join('');
+      })
+      .catch(() => {
+        document.getElementById('past-list').innerHTML = '<p class="events-empty">Unable to load.</p>';
+      });
+  }
+  fetchPastEvents();
+
 
 
   document.querySelectorAll('a[href^="#"]').forEach(a => {
