@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1LDU — Demo</title>
+<title>1LDU</title>
+<meta name="description" content="1LDU Live Set">
+<meta property="og:title" content="1LDU">
+<meta property="og:description" content="1LDU Live Set">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -75,26 +79,7 @@ nav .container {
 .hero-inner h1 span {
   color: var(--accent);
 }
-.hero-cta {
-  margin-top: 48px;
-  display: flex; gap: 16px; flex-wrap: wrap;
-}
-.btn {
-  display: inline-block;
-  padding: 12px 32px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: 300;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  border: 1px solid var(--text);
-  color: var(--text);
-  transition: all 0.2s;
-  cursor: pointer;
-}
-.btn:hover { background: var(--text); color: var(--bg); }
-.btn-accent { border-color: var(--accent); color: var(--accent); }
-.btn-accent:hover { background: var(--accent); color: var(--bg); }
+
 
 /* COUNTDOWN */
 .next-show-label {
@@ -157,12 +142,7 @@ h2 {
 
 /* BIO */
 #bio { background: var(--bg); }
-.bio-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
+
 .bio-text--wide { max-width: 680px; }
 .bio-text p {
   font-size: 0.95rem;
@@ -174,17 +154,7 @@ h2 {
   color: var(--text);
   font-weight: 400;
 }
-.bio-img-placeholder {
-  width: 100%; height: 520px;
-  background: #1a1714;
-  position: relative;
-  overflow: hidden;
-}
-.bio-img-placeholder img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: 0.85;
-}
+
 
 /* MUSIC */
 #music { background: var(--dark); border-top: 1px solid var(--border); }
@@ -312,7 +282,6 @@ footer {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .bio-grid { grid-template-columns: 1fr; gap: 40px; }
   .connect-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   nav .container { padding: 0 20px; }
@@ -385,6 +354,7 @@ footer {
         <iframe src="https://www.youtube.com/embed/HKezcfHWbks" title="1LDU Live @ Trama"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
+    </div>
   </div>
 </section>
 
@@ -406,7 +376,7 @@ footer {
     <div class="events-list" id="events-list">
       <p class="events-loading">Loading...</p>
     </div>
-    <h2 style="margin-top: 80px;">Past shows</h2>
+    <h2 class="past-label">Past shows</h2>
     <div class="events-list" id="past-list">
       <p class="events-loading">Loading...</p>
     </div>
@@ -446,7 +416,7 @@ footer {
 <script>
 
   const CAL_ID = '64e914be9329df91efb8946fe3a3117e58e7074222f261f00777eb20f50af0c3@group.calendar.google.com';
-  const API_KEY = 'AIzaSyCeZqcflELBdFiORBxR0vGX8g9K5kFsj-4'; // substitueix per la teva API key
+  const API_KEY = 'AIzaSyCeZqcflELBdFiORBxR0vGX8g9K5kFsj-4';
 
   let countdownInterval = null;
 
