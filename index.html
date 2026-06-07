@@ -97,11 +97,17 @@ nav .container {
 .btn-accent:hover { background: var(--accent); color: var(--bg); }
 
 /* COUNTDOWN */
+.next-show-label {
+  margin-top: 48px;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
 .countdown {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  margin-top: 40px;
 }
 .cd-block { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .cd-num {
@@ -274,6 +280,7 @@ footer {
 <section id="hero">
   <div class="hero-inner">
     <h1>1L<span>D</span>U</h1>
+    <p class="next-show-label">next show</p>
     <div class="countdown" id="countdown">
       <div class="cd-block"><span class="cd-num" id="cd-days">00</span><span class="cd-label">days</span></div>
       <div class="cd-sep">:</div>
