@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>1LDU</title>
-<meta name="description" content="1LDU Live Set">
+<meta name="description" content="Fully improvised live electronic set. Hardware synthesizers and drum machines. Barcelona.">
 <meta property="og:title" content="1LDU">
-<meta property="og:description" content="1LDU Live Set">
+<meta property="og:description" content="Fully improvised live electronic set. Hardware synthesizers and drum machines. Barcelona.">
 <meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
@@ -42,12 +42,14 @@ nav .container {
   max-width: 1200px; margin: 0 auto; padding: 0 40px;
   display: flex; justify-content: space-between; align-items: center;
 }
+/* [FIX] Logo: consistent amb hero — 1L i U en crema, D en accent */
 .logo {
   font-size: 1.4rem;
   font-weight: 400;
   letter-spacing: 0.15em;
-  color: var(--accent);
+  color: var(--text);
 }
+.logo span { color: var(--accent); }
 .nav-links { display: flex; list-style: none; gap: 36px; }
 .nav-links a {
   font-size: 0.7rem;
@@ -62,8 +64,14 @@ nav .container {
 #hero {
   min-height: 100vh;
   display: flex; align-items: center;
-  background: linear-gradient(rgba(14,12,10,0.25), rgba(14,12,10,0.5)),
-              url('img/hero-bg.jpg') center/cover no-repeat;
+  /* [FIX] Gradient lateral: protegeix el text a l'esquerra sense enfosquir tota la foto */
+  background: linear-gradient(
+    to right,
+    rgba(14,12,10,0.55) 0%,
+    rgba(14,12,10,0.25) 50%,
+    rgba(14,12,10,0.05) 100%
+  ),
+  url('img/hero-bg.jpg') center/cover no-repeat;
   padding: 0 40px;
 }
 .hero-inner {
@@ -78,13 +86,13 @@ nav .container {
 }
 .hero-inner h1 span {
   color: var(--accent);
+  font-weight: 400;
 }
-
 
 /* COUNTDOWN */
 .next-show-label {
   margin-top: 48px;
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: 0.3em;
   color: var(--muted);
   margin-bottom: 12px;
@@ -111,23 +119,22 @@ nav .container {
 .cd-sep {
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 300;
-  color: var(--accent);
+  color: var(--muted);
   line-height: 1;
   padding-bottom: 18px;
 }
 .next-show {
   margin-top: 20px;
-  font-size: 0.65rem;
+  font-size: 0.85rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
 }
 
 /* SECTIONS */
+/* [FIX] Eliminat min-height: 100vh — les seccions ara respiren amb el contingut */
 section {
-  min-height: 100vh;
-  display: flex; align-items: center;
-  padding: 100px 40px;
+  padding: 120px 40px;
 }
 .container { max-width: 1200px; margin: 0 auto; width: 100%; }
 
@@ -143,7 +150,13 @@ h2 {
 /* BIO */
 #bio { background: var(--bg); }
 
-.bio-text--wide { max-width: 680px; }
+/* [NOU] Layout dues columnes: text | foto */
+.bio-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 80px;
+  align-items: start;
+}
 .bio-text p {
   font-size: 0.95rem;
   line-height: 1.9;
@@ -154,21 +167,19 @@ h2 {
   color: var(--text);
   font-weight: 400;
 }
-
-
-/* MUSIC */
-#music { background: var(--dark); border-top: 1px solid var(--border); }
-.music-inner { text-align: center; max-width: 800px; margin: 0 auto; }
-.sc-wrap {
-  margin-top: 40px;
+/* [NOU] Foto bio */
+.bio-photo img {
+  width: 100%;
+  display: block;
   border: 1px solid var(--border);
 }
 
 /* VIDEO */
 #video { background: var(--bg); border-top: 1px solid var(--border); }
 .video-grid {
+  /* [FIX] Grid fix 2 columnes — elimina el video orfe */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
   margin-top: 40px;
 }
@@ -183,7 +194,9 @@ h2 {
   width: 100%; height: 100%; border: none;
 }
 
-
+/* MUSIC */
+#music { background: var(--dark); border-top: 1px solid var(--border); }
+.music-inner { text-align: center; max-width: 800px; margin: 0 auto; }
 
 /* SC PLAYER */
 .sc-player {
@@ -304,10 +317,6 @@ h2 {
   width: 100%; height: 100%;
   object-fit: cover;
 }
-@media (max-width: 768px) {
-  .sc-main { grid-template-columns: 100px 1fr; }
-  .sc-artwork { width: 100px; height: 100px; }
-}
 
 /* UPCOMING */
 #upcoming { background: var(--dark); border-top: 1px solid var(--border); }
@@ -361,19 +370,73 @@ h2 {
   letter-spacing: 0.15em;
   padding: 40px 0;
 }
-@media (max-width: 768px) {
-  .event-row { grid-template-columns: 100px 1fr; }
-  .event-city { display: none; }
-}
 
 /* CONNECT */
 #connect { background: var(--dark); border-top: 1px solid var(--border); }
+
+/* [NOU] Booking CTA prominent */
+.booking-cta {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 22px 32px;
+  margin-bottom: 48px;
+  text-align: center;
+  transition: all 0.2s;
+}
+.booking-cta:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* [NOU] Sublabel de secció (Downloads, Social) */
+.connect-sublabel {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+/* [NOU] Downloads grid */
+.downloads-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.download-btn {
+  background: var(--dark);
+  padding: 22px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+.download-btn:hover {
+  background: rgba(74,103,65,0.08);
+  color: var(--text);
+}
+.download-ext {
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
 .connect-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--border);
-  margin-top: 40px;
   border: 1px solid var(--border);
 }
 .connect-card {
@@ -406,20 +469,35 @@ footer {
 }
 
 /* RESPONSIVE */
+@media (max-width: 900px) {
+  .bio-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .bio-photo {
+    max-width: 380px;
+  }
+}
+
 @media (max-width: 768px) {
   .connect-grid { grid-template-columns: 1fr; }
+  .downloads-grid { grid-template-columns: 1fr; }
+  .video-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   nav .container { padding: 0 20px; }
   section { padding: 80px 20px; }
   #hero { padding: 0 20px; }
-  .next-show-label { font-size: 1rem; letter-spacing: 0.2em; }
+  /* [FIX] Mides mòbil countdown: eren 1rem, desproporcionals */
+  .next-show-label { font-size: 0.75rem; letter-spacing: 0.2em; }
   .cd-num { font-size: clamp(2.4rem, 10vw, 3rem); }
   .cd-label { font-size: 0.7rem; }
-  .next-show { font-size: 1rem; letter-spacing: 0.15em; }
+  .next-show { font-size: 0.85rem; letter-spacing: 0.15em; }
   .sc-main { grid-template-columns: 100px 1fr; }
   .sc-artwork { width: 100px; height: 100px; }
   .sc-info { min-width: 0; }
   .sc-track-title { font-size: 0.7rem; }
+  .event-row { grid-template-columns: 100px 1fr; }
+  .event-city { display: none; }
 }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
@@ -429,6 +507,7 @@ footer {
 
 <nav>
   <div class="container">
+    <!-- [FIX] Logo consistent amb hero: 1L+U en crema, D en accent -->
     <a class="logo" href="#">1LDU</a>
     <ul class="nav-links">
       <li><a href="#bio">Bio</a></li>
@@ -453,17 +532,23 @@ footer {
       <div class="cd-sep">:</div>
       <div class="cd-block"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">sec</span></div>
     </div>
-    <p class="next-show">17.07.2026 — Sala Montjuïc, Barcelona</p>
+    <p class="next-show" id="next-show-text"></p>
   </div>
 </section>
 
 <section id="bio">
   <div class="container">
     <h2>Bio</h2>
-    <div class="bio-text bio-text--wide">
+    <!-- [NOU] Layout dues columnes. Foto: substituir pel nom real del fitxer -->
+    <div class="bio-layout">
+      <div class="bio-text">
         <p>1LDU is the name under which <strong>Ildefons Alonso Valls</strong> presents his solo live electronica project — a collision of joyful and melancholic impulses, held together by relentless groove and fractured by polyrhythm. His proposal moves between open, breathing spaces and moments of dense, concentrated energy — always in motion, never predictable. At the core of 1LDU is performance: entirely improvised, built in real time, unrepeatable by design. The set is built from the ground up. Bass that anchors, rhythms that collide, harmony that drifts and disappears. Each performance moves the audience through sound, pulling them into the drive of the music.</p>
-        <p>Ildefons is a musician, producer, and performer with over 15 years of experience in the Catalan music scene, trained in Jazz Drumming and Composition at the Royal Academy of Music in London and Classical Piano at ESMUC in Barcelona.</p>
+        <p>Ildefons is a Barcelona-based musician, producer, and performer with over 15 years of experience, trained in Jazz Drumming and Composition at the Royal Academy of Music in London and Classical Piano at ESMUC in Barcelona.</p>
       </div>
+      <div class="bio-photo">
+        <img src="img/hero-bg.jpg" alt="1LDU — Ildefons Alonso Valls">
+      </div>
+    </div>
   </div>
 </section>
 
@@ -495,10 +580,7 @@ footer {
   <div class="container">
     <div class="music-inner">
       <h2>Music</h2>
-      <!-- iframe ocult per a Widget API -->
       <iframe id="sc-iframe" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2087680867&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false" style="position:absolute;left:-9999px;width:1px;height:1px;" allow="autoplay"></iframe>
-
-      <!-- Player custom -->
       <div class="sc-player" id="sc-player">
         <div class="sc-main">
           <div class="sc-artwork" id="sc-artwork">
@@ -546,6 +628,23 @@ footer {
 <section id="connect">
   <div class="container">
     <h2>Connect</h2>
+
+    <!-- [NOU] Booking CTA prominent -->
+    <a href="mailto:1ldubooking@gmail.com" class="booking-cta">
+      Booking → 1ldubooking@gmail.com
+    </a>
+
+    <!-- [NOU] Downloads -->
+    <p class="connect-sublabel">Downloads</p>
+    <!-- ⚠️ PENDENT: pujar PDFs al repo i confirmar rutes -->
+    <div class="downloads-grid" style="grid-template-columns: 1fr;">
+      <a href="docs/1LDU-EPK.pdf" target="_blank" class="download-btn" style="justify-content: center; gap: 16px;">
+        <span>EPK</span>
+        <span class="download-ext">↓ PDF</span>
+      </a>
+    </div>
+
+    <p class="connect-sublabel">Social</p>
     <div class="connect-grid">
       <div class="connect-card">
         <a href="https://www.instagram.com/ildefonsalonso" target="_blank">
@@ -562,7 +661,7 @@ footer {
       <div class="connect-card">
         <a href="mailto:1ldubooking@gmail.com">
           <i class="ti ti-mail"></i>
-          <span>Booking</span>
+          <span>Email</span>
         </a>
       </div>
     </div>
@@ -574,8 +673,6 @@ footer {
 </footer>
 
 <script>
-
-
   // ── SoundCloud Custom Player ──
   const scIframe = document.getElementById('sc-iframe');
   const widget = SC.Widget(scIframe);
@@ -665,18 +762,12 @@ footer {
     }
   });
 
-  // Controls
   document.getElementById('sc-play').addEventListener('click', () => {
     isPlaying ? widget.pause() : widget.play();
   });
-  document.getElementById('sc-prev').addEventListener('click', () => {
-    widget.prev();
-  });
-  document.getElementById('sc-next').addEventListener('click', () => {
-    widget.next();
-  });
+  document.getElementById('sc-prev').addEventListener('click', () => { widget.prev(); });
+  document.getElementById('sc-next').addEventListener('click', () => { widget.next(); });
 
-  // Progress bar seek
   document.getElementById('sc-progress-bar').addEventListener('click', e => {
     if (!duration) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -684,13 +775,14 @@ footer {
     widget.seekTo(ratio * duration);
   });
 
+  // ── Google Calendar ──
   const CAL_ID = '64e914be9329df91efb8946fe3a3117e58e7074222f261f00777eb20f50af0c3@group.calendar.google.com';
   const API_KEY = 'AIzaSyCeZqcflELBdFiORBxR0vGX8g9K5kFsj-4';
 
   let countdownInterval = null;
 
   function startCountdown(target, venue) {
-    document.querySelector('.next-show').textContent = venue;
+    document.getElementById('next-show-text').textContent = venue;
     function tick() {
       const now = new Date();
       const diff = target - now;
@@ -721,8 +813,9 @@ footer {
       .then(data => {
         const events = data.items;
         if (!events || events.length === 0) {
+          // [FIX] Fallback neutre sense data hardcodada
           document.getElementById('countdown').style.display = 'none';
-          document.querySelector('.next-show').style.display = 'none';
+          document.querySelector('.next-show-label').style.display = 'none';
           return;
         }
         const ev = events[0];
@@ -734,8 +827,7 @@ footer {
         startCountdown(target, venue);
       })
       .catch(() => {
-        // fallback: mostra el countdown sense text de venue
-        document.querySelector('.next-show').textContent = 'Next show coming soon';
+        document.getElementById('next-show-text').textContent = 'Next show coming soon';
       });
   }
 
@@ -807,14 +899,12 @@ footer {
   }
   fetchPastEvents();
 
-
-
   document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    });
   });
-});
 </script>
 </body>
 </html>
