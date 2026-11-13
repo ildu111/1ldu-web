@@ -29,17 +29,14 @@
   .where .coords { letter-spacing:.14em; color:var(--dim); text-transform:none; }
   .cat { width:min(100%, 560px); }
   .cat h2 { font-size:10px; font-weight:300; letter-spacing:.32em; color:var(--dim); margin-bottom:14px; }
-  .cat table { width:100%; border-collapse:collapse; font-size:12px; letter-spacing:.08em; }
-  .cat td { padding:10px 6px; border-top:1px solid var(--line); text-align:left; white-space:nowrap; }
-  .cat tr:last-child td { border-bottom:1px solid var(--line); }
-  .covers { display:flex; justify-content:center; gap:clamp(16px,3vw,28px); margin-bottom:clamp(20px,4vh,36px); }
-  .covers a, .covers span { border:0; display:block; flex:0 0 auto; align-self:flex-start; width:min(26vh, 39vw, 260px); }
-  .covers img { width:100%; height:auto; aspect-ratio:1/1; object-fit:contain; display:block; }
-  .cat td.no { color:var(--dim); width:1%; }
-  .cat td.date { text-align:right; color:var(--dim); width:1%; }
-  .cat .wrap { overflow-x:auto; }
+  .rel { display:flex; flex-direction:column; align-items:center; margin-bottom:clamp(28px,5vh,48px); }
+  .rel:last-child { margin-bottom:0; }
+  .rel .cv { display:block; width:min(26vh, 39vw, 260px); margin-bottom:16px; border:0; }
+  .rel .cv img { width:100%; height:auto; aspect-ratio:1/1; object-fit:contain; display:block; }
+  .line { width:100%; display:flex; align-items:baseline; gap:14px; padding:10px 6px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); font-size:12px; letter-spacing:.08em; text-align:left; }
+  .line .no, .line .date { color:var(--dim); white-space:nowrap; }
+  .line .t { flex:1; }
   .mail { font-size:12px; letter-spacing:.12em; }
-  @media (max-width:520px) { .cat td { white-space:normal; } .cat td.no, .cat td.date { white-space:nowrap; } }
 </style>
 </head>
 <body>
@@ -51,15 +48,15 @@
   </p>
 
   <section class="cat">
-    <div class="covers">
-      <a href="https://1ldu.lnk.to/0VERTUREF1NALE" target="_blank" rel="noopener"><img src="../img/cover-0verture-f1nale.jpg" alt="1LDU — 0VERTURE/F1NALE cover" loading="lazy"></a>
-      <span><img src="../img/cover-p0lyph0n.jpg" alt="1LDU — P0LYPH0N cover" loading="lazy"></span>
-    </div>
     <h2>CATALOGUE</h2>
-    <div class="wrap"><table>
-      <tr><td class="no">1L01-001</td><td><a href="https://1ldu.lnk.to/0VERTUREF1NALE" target="_blank" rel="noopener">1LDU — 0VERTURE/F1NALE</a></td><td class="date">20.11.2026</td></tr>
-      <tr><td class="no">1L01-002</td><td>1LDU — P0LYPH0N</td><td class="date">04.12.2026</td></tr>
-    </table></div>
+    <div class="rel">
+      <a class="cv" href="https://1ldu.lnk.to/0VERTUREF1NALE" target="_blank" rel="noopener"><img src="../img/cover-0verture-f1nale.jpg" alt="1LDU — 0VERTURE/F1NALE cover" loading="lazy"></a>
+      <div class="line"><span class="no">1L01-001</span><span class="t"><a href="https://1ldu.lnk.to/0VERTUREF1NALE" target="_blank" rel="noopener">1LDU — 0VERTURE/F1NALE</a></span><span class="date">20.11.2026</span></div>
+    </div>
+    <div class="rel">
+      <span class="cv"><img src="../img/cover-p0lyph0n.jpg" alt="1LDU — P0LYPH0N cover" loading="lazy"></span>
+      <div class="line"><span class="no">1L01-002</span><span class="t">1LDU — P0LYPH0N</span><span class="date">04.12.2026</span></div>
+    </div>
   </section>
 
   <p class="mail" id="m"><span>1l01records.label [at] gmail.com</span></p>
