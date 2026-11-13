@@ -499,6 +499,12 @@ footer {
   .event-row { grid-template-columns: 100px 1fr; }
   .event-city { display: none; }
 }
+.rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px;margin-top:32px}
+.rel-item img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.rel-meta{margin-top:14px;font-size:13px;letter-spacing:.08em;line-height:1.8}
+.rel-meta .rel-type{color:var(--muted);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+.rel-btn{display:inline-block;margin-top:12px;padding:10px 22px;border:1px solid var(--text);color:var(--text);text-decoration:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase;transition:background .2s,color .2s}
+.rel-btn:hover{background:var(--text);color:var(--bg)}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <script src="https://w.soundcloud.com/player/api.js"></script>
@@ -510,6 +516,7 @@ footer {
     <!-- [FIX] Logo consistent amb hero: 1L+U en crema, D en accent -->
     <a class="logo" href="#">1LDU</a>
     <ul class="nav-links">
+      <li><a href="#release">Release</a></li>
       <li><a href="#bio">Bio</a></li>
       <li><a href="#video">Video</a></li>
       <li><a href="#music">Music</a></li>
@@ -533,6 +540,23 @@ footer {
       <div class="cd-block"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">sec</span></div>
     </div>
     <p class="next-show" id="next-show-text"></p>
+  </div>
+</section>
+
+<section id="release">
+  <div class="container">
+    <h2>Release</h2>
+    <div class="rel-grid">
+      <div class="rel-item">
+        <a href="https://1ldu.lnk.to/0VERTUREF1NALE" target="_blank" rel="noopener"><img src="img/cover-0verture-f1nale.jpg" alt="1LDU — 0VERTURE/F1NALE cover" width="1200" height="1200" loading="lazy"></a>
+        <div class="rel-meta"><span class="rel-type">Single · 20.11.2026</span><br>0VERTURE/F1NALE<br>
+        <a class="rel-btn" href="https://1ldu.lnk.to/0VERTUREF1NALE" target="_blank" rel="noopener">Pre-save</a></div>
+      </div>
+      <div class="rel-item">
+        <img src="img/cover-p0lyph0n.jpg" alt="1LDU — P0LYPH0N cover" width="1200" height="1200" loading="lazy">
+        <div class="rel-meta"><span class="rel-type">Album · 04.12.2026</span><br>P0LYPH0N</div>
+      </div>
+    </div>
   </div>
 </section>
 
