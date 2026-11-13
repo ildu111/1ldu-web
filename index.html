@@ -499,8 +499,10 @@ footer {
   .event-row { grid-template-columns: 100px 1fr; }
   .event-city { display: none; }
 }
-.rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px;margin-top:32px}
-.rel-item img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.rel-grid{display:flex;flex-wrap:wrap;gap:48px}
+.rel-item{width:min(260px,100%)}
+.rel-item a{display:block}
+.rel-item img{width:100%;height:auto;display:block}
 .rel-meta{margin-top:14px;font-size:13px;letter-spacing:.08em;line-height:1.8}
 .rel-meta .rel-type{color:var(--muted);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
 .rel-btn{display:inline-block;margin-top:12px;padding:10px 22px;border:1px solid var(--text);color:var(--text);text-decoration:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase;transition:background .2s,color .2s}
