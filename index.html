@@ -507,6 +507,49 @@ footer {
 .rel-meta .rel-type{color:var(--muted);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
 .rel-btn{display:inline-block;margin-top:12px;padding:10px 22px;border:1px solid var(--text);color:var(--text);text-decoration:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase;transition:background .2s,color .2s}
 .rel-btn:hover{background:var(--text);color:var(--bg)}
+
+/* ── Llegibilitat (nov. 2026) ──────────────────────────────
+   Light només en mides grans; text petit en Regular.
+   Mida mínima ~13px. Menys tracking. Verd aclarit per a text
+   petit (mateix to que --accent; contrast 7.5:1). */
+:root { --accent-text: #8AAA7E; --muted: rgba(240,237,230,0.82); }
+body { font-weight: 400; }
+.hero-inner h1, .cd-num, .cd-sep, .logo { font-weight: 300; }
+.bio-text p { font-size: 1.05rem; line-height: 1.75; font-weight: 300; color: var(--text); opacity: .9; }
+.nav-links a { font-size: 0.8rem; letter-spacing: 0.12em; }
+h2 { font-size: 0.85rem; letter-spacing: 0.18em; color: var(--accent-text); }
+.next-show-label { font-size: 0.8rem; letter-spacing: 0.18em; }
+.next-show { font-size: 0.95rem; letter-spacing: 0.12em; color: var(--accent-text); }
+.cd-label { font-size: 0.75rem; letter-spacing: 0.15em; }
+.sc-track-title { font-size: 0.9rem; letter-spacing: 0.06em; }
+.sc-times { font-size: 0.8rem; letter-spacing: 0.08em; }
+.sc-track-num { font-size: 0.8rem; letter-spacing: 0.1em; }
+.sc-track-name { font-size: 0.9rem; letter-spacing: 0.04em; }
+.sc-track-row.active .sc-track-num { color: var(--accent-text); }
+.events-loading, .events-empty { font-size: 0.85rem; letter-spacing: 0.08em; }
+.event-date { font-size: 0.9rem; letter-spacing: 0.06em; color: var(--accent-text); }
+.event-venue { font-size: 1rem; letter-spacing: 0.02em; }
+.event-city { font-size: 0.85rem; letter-spacing: 0.08em; }
+.past-label { font-size: 0.85rem; letter-spacing: 0.18em; }
+.event-row--past .event-date,
+.event-row--past .event-venue,
+.event-row--past .event-city { opacity: 1; color: rgba(240,237,230,0.62); }
+.booking-cta { font-size: 0.9rem; letter-spacing: 0.12em; color: var(--accent-text); border-color: var(--accent-text); }
+.booking-cta:hover { background: var(--accent-text); color: var(--bg); }
+.connect-sublabel { font-size: 0.8rem; letter-spacing: 0.15em; }
+.download-btn { font-size: 0.85rem; letter-spacing: 0.12em; color: var(--text); }
+.download-ext { font-size: 0.8rem; color: var(--accent-text); }
+.connect-card a { font-size: 0.85rem; letter-spacing: 0.12em; color: var(--text); }
+.connect-card i { color: var(--accent-text); }
+footer { font-size: 0.8rem; letter-spacing: 0.12em; }
+.rel-meta { font-size: 0.9rem; }
+.rel-meta .rel-type { font-size: 0.8rem; letter-spacing: 0.15em; }
+.rel-btn { font-size: 0.85rem; letter-spacing: 0.12em; }
+@media (max-width: 768px) {
+  .sc-track-title { font-size: 0.85rem; }
+  .event-row { grid-template-columns: 96px 1fr; gap: 16px; }
+  .bio-text p { font-size: 1rem; }
+}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <script src="https://w.soundcloud.com/player/api.js"></script>
@@ -818,7 +861,7 @@ footer {
       const diff = target - now;
       if (diff <= 0) {
         document.getElementById('countdown').innerHTML =
-          '<span style="font-size:1rem;letter-spacing:0.2em;color:var(--accent)">TONIGHT</span>';
+          '<span style="font-size:1rem;letter-spacing:0.15em;color:var(--accent-text)">TONIGHT</span>';
         clearInterval(countdownInterval);
         return;
       }
